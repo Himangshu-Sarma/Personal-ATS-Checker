@@ -12,10 +12,10 @@ import google.generativeai as genai
 
 genai.configure(api_key = os.getenv("GOOGLE_API_KEY"))
 
-def get_gemini_response(prompt, pdf_content, input_text):
+def get_gemini_response(prompt, pdf_content):
     ## generating content based upon the input_text and prompt
     model = genai.GenerativeModel('gemini-1.5-pro')
-    response = model.generate_content([prompt, pdf_content[0], input_text])
+    response = model.generate_content([prompt, pdf_content[0]])
     return response
 
 def input_pdf_convert(uploaded_file):
@@ -62,27 +62,27 @@ submit3 = st.button("What Are The Keywords That Are Missing ?")
 
 submit4 = st.button("Percentage Match")
 
-prompt1 = """
+prompt1 = '''
     You are an experienced Technical Human Resource Manager, your task is to review my provided resume against the job description. 
     Please share your professional evaluation on whether my profile aligns with the role higlighting the strengths and weaknesses about me.
-"""
+'''
 
-prompt2 = """
+prompt2 = '''
     You are an experienced Technical Human Resource Manager, your task is to provide the ways to improvise my skills against the job description.
-"""
+    The job desciprtion is : ''' + str(input_text) + ''' '''
 
-prompt3 = """
+prompt3 = '''
     You are an advanced ATS(Applicant Tracking System) scanner with deep understanding of IT Jobs and their requirements and deep ATS functionality. Your task is to evaluate my resume against the job description by highlighting the keywords that are missing in the resume.
-"""
+    The job desciprtion is : ''' + str(input_text) + ''' '''
 
-prompt4 = """
+prompt4 = '''
     You are an advanced ATS(Applicant Tracking System) scanner with deep understanding of IT Jobs and their requirements and deep ATS functionality. Your task is to evaluate my resume against the job description by highlighting the percentage match and also share the final thoughts.
-"""
+    The job desciprtion is : ''' + str(input_text) + ''' '''
 
 if submit1:
     if uploaded_file is not None:
         pdf_content = input_pdf_convert(uploaded_file)
-        response = get_gemini_response(prompt1, pdf_content, input_text)
+        response = get_gemini_response(prompt1, pdf_content)
         st.subheader("The response is : ")
         st.write(response.text)
 
@@ -92,7 +92,7 @@ if submit1:
 elif submit2:
     if uploaded_file is not None:
         pdf_content = input_pdf_convert(uploaded_file)
-        response = get_gemini_response(prompt2, pdf_content, input_text)
+        response = get_gemini_response(prompt2, pdf_content)
         st.subheader("The response is : ")
         st.write(response.text)
 
@@ -102,7 +102,7 @@ elif submit2:
 elif submit3:
     if uploaded_file is not None:
         pdf_content = input_pdf_convert(uploaded_file)
-        response = get_gemini_response(prompt3, pdf_content, input_text)
+        response = get_gemini_response(prompt3, pdf_content)
         st.subheader("The response is : ")
         st.write(response.text)
 
@@ -112,7 +112,7 @@ elif submit3:
 elif submit4:
     if uploaded_file is not None:
         pdf_content = input_pdf_convert(uploaded_file)
-        response = get_gemini_response(prompt4, pdf_content, input_text)
+        response = get_gemini_response(prompt4, pdf_content)
         st.subheader("The response is : ")
         st.write(response.text)
 
